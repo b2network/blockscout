@@ -416,6 +416,9 @@ config :explorer, Explorer.TokenInstanceOwnerAddressMigration,
   concurrency: ConfigHelper.parse_integer_env_var("TOKEN_INSTANCE_OWNER_MIGRATION_CONCURRENCY", 5),
   batch_size: ConfigHelper.parse_integer_env_var("TOKEN_INSTANCE_OWNER_MIGRATION_BATCH_SIZE", 50)
 
+config :explorer, Explorer.Chain.Cache.AddressesTabsCounters,
+  ttl: ConfigHelper.parse_time_env_var("ADDRESSES_TABS_COUNTERS_TTL", "10m")
+
 ###############
 ### Indexer ###
 ###############
