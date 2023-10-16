@@ -1705,6 +1705,7 @@ defmodule BlockScoutWeb.API.V2.AddressControllerTest do
           )
           |> Repo.preload([:token])
         end
+        # works because one token_id per token, despite ordering in DB: [asc: ti.token_contract_address_hash, desc: ti.token_id]
         |> Enum.sort_by(&{&1.token_contract_address_hash, &1.token_id}, :desc)
 
       request = get(conn, endpoint.(address.hash))
@@ -1933,7 +1934,7 @@ defmodule BlockScoutWeb.API.V2.AddressControllerTest do
 
               %Instance{ti | current_token_balance: current_token_balance}
             end
-            |> Enum.sort_by(&{&1.token_contract_address_hash, &1.token_id}, :asc)
+            |> Enum.sort_by(&{&1.token_contract_address_hash, &1.token_id}, :desc)
 
           {current_token_balance, token_instances}
         end
@@ -1980,7 +1981,7 @@ defmodule BlockScoutWeb.API.V2.AddressControllerTest do
 
               %Instance{ti | current_token_balance: current_token_balance}
             end
-            |> Enum.sort_by(&{&1.token_contract_address_hash, &1.token_id}, :asc)
+            |> Enum.sort_by(& &1.token_id, :desc)
 
           {token, amount, token_instances}
         end
@@ -2027,7 +2028,7 @@ defmodule BlockScoutWeb.API.V2.AddressControllerTest do
 
               %Instance{ti | current_token_balance: current_token_balance}
             end
-            |> Enum.sort_by(&{&1.token_contract_address_hash, &1.token_id}, :asc)
+            |> Enum.sort_by(& &1.token_id, :desc)
 
           {current_token_balance, token_instances}
         end
@@ -2059,7 +2060,7 @@ defmodule BlockScoutWeb.API.V2.AddressControllerTest do
 
               %Instance{ti | current_token_balance: current_token_balance}
             end
-            |> Enum.sort_by(&{&1.token_contract_address_hash, &1.token_id}, :asc)
+            |> Enum.sort_by(& &1.token_id, :desc)
 
           {token, amount, token_instances}
         end
@@ -2116,7 +2117,7 @@ defmodule BlockScoutWeb.API.V2.AddressControllerTest do
 
               %Instance{ti | current_token_balance: current_token_balance}
             end
-            |> Enum.sort_by(&{&1.token_contract_address_hash, &1.token_id}, :asc)
+            |> Enum.sort_by(& &1.token_id, :desc)
 
           {current_token_balance, token_instances}
         end
@@ -2148,7 +2149,7 @@ defmodule BlockScoutWeb.API.V2.AddressControllerTest do
 
               %Instance{ti | current_token_balance: current_token_balance}
             end
-            |> Enum.sort_by(&{&1.token_contract_address_hash, &1.token_id}, :asc)
+            |> Enum.sort_by(& &1.token_id, :desc)
 
           {token, amount, token_instances}
         end
