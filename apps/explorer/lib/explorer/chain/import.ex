@@ -321,6 +321,18 @@ defmodule Explorer.Chain.Import do
     runner_to_changes_list
     |> runner_to_changes_list_to_multis(options)
     |> logged_import(options)
+    |> case do
+      {:ok, result} ->
+        {:ok, result}
+
+      error ->
+        remove_consensus_from_partially_imported_blocks(options)
+        error
+    end
+  rescue
+    exception ->
+      remove_consensus_from_partially_imported_blocks(options)
+      reraise exception, __STACKTRACE__
   end
 
   defp logged_import(multis, options) when is_list(multis) and is_map(options) do
@@ -347,6 +359,14 @@ defmodule Explorer.Chain.Import do
   defp import_transaction(multi, options) when is_map(options) do
     Repo.logged_transaction(multi, timeout: Map.get(options, :timeout, @transaction_timeout))
   end
+
+  defp remove_consensus_from_partially_imported_blocks(%{blocks: %{params: blocks_params}}) do
+    blocks_params
+    |> Enum.map(& &1.number)
+    |> Import.Runner.Blocks.invalidate_consensus_blocks()
+  end
+
+  defp remove_consensus_from_partially_imported_blocks(_options), do: :ok
 
   @spec timestamps() :: timestamps
   def timestamps do
