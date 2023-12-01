@@ -11,4 +11,9 @@ probe() {
     done
 }
 
+modifyConf() {
+    # ls docker-compose/envs/*public-test.env 
+    sed -i 's|192.168.50.127|43.135.203.73|g' docker-compose/envs/*public-test.env 
+}
+
 $@

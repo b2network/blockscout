@@ -8,4 +8,5 @@ services:
     restart: always
     container_name: 'frontend'
     env_file:
-      -  ../envs/common-frontend.env
+      # -  ../envs/common-frontend.env
+      -  ../envs/common-frontend-public-test.env
