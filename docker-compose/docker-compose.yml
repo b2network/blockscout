@@ -6,11 +6,6 @@ services:
       file: ./services/docker-compose-redis.yml
       service: redis_db
 
-  db-init:
-    extends:
-      file: ./services/docker-compose-db.yml
-      service: db-init
-
   db:
     extends:
       file: ./services/docker-compose-db.yml
@@ -55,11 +50,6 @@ services:
       file: ./services/docker-compose-frontend.yml
       service: frontend
 
-  stats-db-init:
-    extends:
-      file: ./services/docker-compose-stats.yml
-      service: stats-db-init
-
   stats-db:
     depends_on:
       - backend
@@ -82,3 +72,11 @@ services:
     extends:
       file: ./services/docker-compose-nginx.yml
       service: proxy
+
+volumes:
+  stats-db-data:
+    external: false
+  logs:
+    external: false
+  blockscout-db-data:
+    external: false
