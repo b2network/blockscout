@@ -1,6 +1,41 @@
 set -x
 
 workDir=$(pwd)
+shopt -s expand_aliases
+
+alias dc='docker-compose --env-file .env.l1'
+# alias dc='docker-compose --env-file .env.l2'
+
+startL1L2() {
+    docker-compose --env-file .env.l1 up -d
+    sleep 10s
+    docker-compose --env-file .env.l2 up -d
+}
+
+stopL1L2() {
+    docker-compose --env-file .env.l1 down -v
+    docker-compose --env-file .env.l2 down -v
+}
+
+restartL1L2() {
+    stopL1L2
+    startL1L2
+}
+
+debug() {
+    # docker-compose --env-file .env.l1 ps -a
+    # docker-compose --env-file .env.l2 ps -a
+    docker-compose --env-file .env.l1 logs backend > tmp1.log
+    docker-compose --env-file .env.l2 logs backend > tmp2.log
+    return
+    svs=$(dc ps --services | xargs)
+    for item in $svs; do
+        dc exec -it $item date
+        # dc exec -it $item env
+        # dc exec -it $item cat /etc/os-release
+    done
+    return
+}
 
 ymlDiff() {
     # cd $workDir/L1
@@ -27,4 +62,8 @@ envDiff() {
     return
 }
 
+show() {
+    # browsh http://127.0.0.1:30000
+    browsh http://127.0.0.1:30001
+}
 $@
