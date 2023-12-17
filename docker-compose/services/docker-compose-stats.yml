@@ -11,6 +11,7 @@ services:
         POSTGRES_PASSWORD: 'n0uejXPl61ci6ldCuE2gQU5Y'
     volumes:
       - stats-db-data:/var/lib/postgresql/data
+      - /etc/localtime:/etc/localtime:ro 
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U stats -d stats"]
       interval: 10s
@@ -25,6 +26,8 @@ services:
     restart: always
     depends_on:
       - "stats-db"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro 
     extra_hosts:
       - 'host.docker.internal:host-gateway'
     env_file:

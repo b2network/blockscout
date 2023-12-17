@@ -3,6 +3,8 @@ version: '3.9'
 services:
   visualizer:
     image: ghcr.io/blockscout/visualizer:${VISUALIZER_DOCKER_TAG:-latest}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro 
     pull_policy: always
     platform: linux/amd64
     restart: always

@@ -4,3 +4,5 @@ services:
   redis_db:
     image: 'redis:alpine'
     command: redis-server
+    volumes:
+      - /etc/localtime:/etc/localtime:ro 
