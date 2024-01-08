@@ -25,6 +25,8 @@ restartL1L2() {
 debug() {
     # docker-compose --env-file .env.l1 ps -a
     # docker-compose --env-file .env.l2 ps -a
+    docker-compose --env-file .env.l1  config 
+    return
     docker-compose --env-file .env.l1 logs backend > tmp1.log
     docker-compose --env-file .env.l2 logs backend > tmp2.log
     return
