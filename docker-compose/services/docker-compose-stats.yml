@@ -24,8 +24,8 @@ services:
     pull_policy: always
     platform: linux/amd64
     restart: always
-    depends_on:
-      - "stats-db"
+    # depends_on:
+    #   - "stats-db"
     volumes:
       - /etc/localtime:/etc/localtime:ro 
     extra_hosts:

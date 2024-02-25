@@ -1,9 +1,9 @@
 set -x
 
 workDir=$(pwd)
-shopt -s expand_aliases
+# shopt -s expand_aliases
 
-alias dc='docker-compose --env-file .env.l1'
+# alias dc='docker-compose --env-file .env.l1'
 # alias dc='docker-compose --env-file .env.l2'
 
 startL1L2() {
@@ -23,12 +23,14 @@ restartL1L2() {
 }
 
 debug() {
-    # docker-compose --env-file .env.l1 ps -a
-    # docker-compose --env-file .env.l2 ps -a
-    docker-compose --env-file .env.l1  config 
+    for item in .env.l1 .env.l2; do
+        # docker-compose --env-file $item ps -a
+        newName=tmp-${item/.env./}-docker-compose-allinone.yml
+        docker-compose --env-file $item config >$newName
+    done
     return
-    docker-compose --env-file .env.l1 logs backend > tmp1.log
-    docker-compose --env-file .env.l2 logs backend > tmp2.log
+    docker-compose --env-file .env.l1 logs backend
+    docker-compose --env-file .env.l2 logs backend >tmp2.log
     return
     svs=$(dc ps --services | xargs)
     for item in $svs; do
